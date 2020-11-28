@@ -20,13 +20,15 @@
 
 	OU
 
-	docker build -t rudiney/pismo . -f app.Dockerfile
+	docker build -t rudiney/pismo ../ -f app.Dockerfile
 	 --com arquivo nomeado app.Dockerfile
 
 - EXECUTAR A IMAGEM para criar e disponibilizar o container
 	docker run rudiney/pismo --link mysql57c
 
+	docker run -t --link mysql57c -p 8080:8080 rudiney/pismo
 
+	docker run --network=pismo --name javacontainer rudiney/pismo
 
 ###################DOCKER TO DATA BASE##########################
 - CRIAR DOCKERFILE do banco de dados
@@ -49,7 +51,7 @@
 	EXECUTAR A IMAGEM
 		sudo docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=userTransactions -e MYSQL_USER=root -e MYSQL_PASSWORD= rudiney/pismo-db --name mysql57c --network=pismo
 
-		sudo docker run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=userTransactions -e MYSQL_USER=root -e MYSQL_PASSWORD= rudiney/pismo-db --name mysql57c --network=pismo
+		sudo docker run -d --network=pismo --name mysql57c -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=userTransactions -e MYSQL_USER=root -e MYSQL_PASSWORD= rudiney/pismo-db 
 
 	TESTAR imagem do banco de dados
 		docker exec -it container_id bash
