@@ -1,47 +1,61 @@
-MODELO
+- INSTALL DOCKER
+	https://docs.docker.com/engine/install/ubuntu/
 
-	Accounts
-	id long
-	document_number string
+- INSTALL DOCKER COMPOSE
+	https://docs.docker.com/compose/install/
 
-	OperationsTypes
-	id long
-	description String
+- ATUALIZAR USUARIOS DO GRUPO DOCKER e evitar usar sudo
+	newgrp docker
 
-	Transactions
-	id long
-	amount BigDecimal
-	operationType_id FK
-	account_id FK
+- COMUNICAÇÃO ENTRE CONTAINERS
+	https://stackoverflow.com/questions/56667414/access-mysql-in-one-container-from-another-container
 
 
+###################DOCKER TO APPLICATION##########################
+- CRIAR DOCKERFILE da aplicação
 
-THINKING DOCKER
-Fazer o download do projeto do git
-	git clone
-Acessar a pasta do projeto 
-	cd transactions
-Empacotar o projeto
-	./mvnw package
-Rodar o projeto
-	java -jar target/transactions-0.0.1-SNAPSHOT.jar
+- CRIAR IMAGEM, rodando o comando abaixo na mesma pasta do arquivo 'Dockerfile'
+	docker build -t rudiney/pismo .
+	 --não esquecer do ponto (indica o diretorio atual, onde está um arquivo chamado 'Dockerfile')
 
-DOCKERFILE
-FROM ubuntu:latest
+	OU
 
-#enter bash
-RUN /bin/sh
+	docker build -t rudiney/pismo . -f app.Dockerfile
+	 --com arquivo nomeado app.Dockerfile
 
-#cria pasta pismo
-RUN mkdir/pismoDocker
+- EXECUTAR A IMAGEM para criar e disponibilizar o container
+	docker run rudiney/pismo --link mysql57c
 
-RUN cd pismo
 
-RUN git clone https://github.com/rudineybarbosa/transactions.git
 
-RUN cd transactions
+###################DOCKER TO DATA BASE##########################
+- CRIAR DOCKERFILE do banco de dados
+	Baixar uma imagem do mysql
+		FROM mysql:5.7
 
-RUN ./mvnw package
+	CRIAR IMAGEM
+		docker build -t rudiney/pismo-db .
 
-RUN java -jar target/transactions-0.0.1-SNAPSHOT.jar
 
+	CRIAR IMAGEM do banco de dados
+		Verificar se a porta esta em uso
+			sudo lsof -i -P -n | grep LISTEN
+
+		Matar processo utilizando uma porta
+			sudo kill `sudo lsof -t -i:3306`
+		Stop container
+			docker stop b25b69c344de
+	
+	EXECUTAR A IMAGEM
+		sudo docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=userTransactions -e MYSQL_USER=root -e MYSQL_PASSWORD= rudiney/pismo-db --name mysql57c --network=pismo
+
+		sudo docker run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=userTransactions -e MYSQL_USER=root -e MYSQL_PASSWORD= rudiney/pismo-db --name mysql57c --network=pismo
+
+	TESTAR imagem do banco de dados
+		docker exec -it container_id bash
+		root@container_id:/# mysql -uroot -p
+		Enter password: 'digitar o valor de MYSQL_ROOT_PASSWORD'
+
+	PEGAR O IP DE UM CONTAINER
+		docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
+		docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' b4615b966e00
