@@ -61,3 +61,14 @@
 	PEGAR O IP DE UM CONTAINER
 		docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
 		docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' b4615b966e00
+
+
+################### REGISTRAR IMAGEM ##############
+	Login na conta Docker
+		docker login
+
+	Vincular imagem local (rudineypismo) ao repositório (rudineybarbosa) dando um nome a imagem remota (rudineypismo)
+		docker tag rudineypismo rudineybarbosa/rudineypismo
+
+	Submetar ao repositório remoto
+		docker push rudineybarbosa/rudineypismo
