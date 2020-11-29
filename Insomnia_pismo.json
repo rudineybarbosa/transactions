@@ -1,0 +1,380 @@
+_type: export
+__export_format: 4
+__export_date: 2020-11-29T04:12:13.747Z
+__export_source: insomnia.desktop.app:v2020.4.2
+resources:
+  - _id: req_1c37b7200fac415b93c2ef93d6a76f68
+    parentId: fld_8eaccc0483c04a528aaac576c3792b16
+    modified: 1606620573121
+    created: 1606620563418
+    url: http://localhost:8080/v2/api-docs
+    name: API JSON
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1606620563418
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_8eaccc0483c04a528aaac576c3792b16
+    parentId: wrk_76d04fcf165e4d90abd77b6246d3004c
+    modified: 1606388466067
+    created: 1606388466067
+    name: TransactionsPismo
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1606388466067
+    _type: request_group
+  - _id: wrk_76d04fcf165e4d90abd77b6246d3004c
+    parentId: null
+    modified: 1586342537196
+    created: 1586342537196
+    name: BootCamp
+    description: ""
+    scope: null
+    _type: workspace
+  - _id: req_98b1e88b64d54d76b5e9e8b1b4b80470
+    parentId: fld_aa13ea687c0c489c9b305d47d9980cd3
+    modified: 1606390827017
+    created: 1606387548701
+    url: http://localhost:8080/accounts
+    name: Account Already Exist
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"documentNumber": "12345678900"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_a7ce32eae2fc44fdaa382e4f1123ecfc
+    authentication: {}
+    metaSortKey: -1606387548702
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_aa13ea687c0c489c9b305d47d9980cd3
+    parentId: fld_8eaccc0483c04a528aaac576c3792b16
+    modified: 1606390293454
+    created: 1606385167314
+    name: Accounts
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1606390286608
+    _type: request_group
+  - _id: req_b189a9a26cc24e7b8e6e36cb99bbb2ae
+    parentId: fld_aa13ea687c0c489c9b305d47d9980cd3
+    modified: 1606390838047
+    created: 1606388178798
+    url: http://localhost:8080/accounts
+    name: Account New
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"documentNumber": "12345678906"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_a7ce32eae2fc44fdaa382e4f1123ecfc
+    authentication: {}
+    metaSortKey: -1606386365428
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_4a251a2d505e4c7c92fcfb694336a68f
+    parentId: fld_aa13ea687c0c489c9b305d47d9980cd3
+    modified: 1606390881969
+    created: 1606389215401
+    url: http://localhost:8080/accounts/1
+    name: Account Updated
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"documentNumber": "12345678999"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_a7ce32eae2fc44fdaa382e4f1123ecfc
+    authentication: {}
+    metaSortKey: -1606385773791
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a5df0f84ad4f47cc9fdc6353e20de41a
+    parentId: fld_aa13ea687c0c489c9b305d47d9980cd3
+    modified: 1606543449626
+    created: 1606385182154
+    url: http://localhost:8080/accounts/1
+    name: Account ById
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1606385182154
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1012f325d56f4393bd090a17db0cd0f4
+    parentId: fld_aa13ea687c0c489c9b305d47d9980cd3
+    modified: 1606620523538
+    created: 1606388419685
+    url: http://localhost:8080/v2/api-docs
+    name: Account List
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1606344078200
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_82742a2b917a43e4b4782f31d000ea3a
+    parentId: fld_aa13ea687c0c489c9b305d47d9980cd3
+    modified: 1606436935532
+    created: 1606385722697
+    url: http://localhost:8080/accounts/document/12345678900ss
+    name: Account ByDocumentNumber
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1606302974246
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_bc04c92783bf45d3b0b70c79df550fff
+    parentId: fld_14f0dde773654690913fc9cbdb7ed44a
+    modified: 1606420696255
+    created: 1606390820151
+    url: http://localhost:8080/transactions
+    name: Transaction OO
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"account": {
+        		"id": 1
+        	},
+        	"operation": {
+        		"id": 1
+        	},
+        	"amount": -123.45
+        	
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_1ab7452ed28941fea52ca7c0e5055e29
+    authentication: {}
+    metaSortKey: -1606390820151
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_14f0dde773654690913fc9cbdb7ed44a
+    parentId: fld_8eaccc0483c04a528aaac576c3792b16
+    modified: 1606390286558
+    created: 1606390286558
+    name: Transactions
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1606390286558
+    _type: request_group
+  - _id: req_00c2eb65d69543e8b9ae0bc0167fd7d0
+    parentId: fld_14f0dde773654690913fc9cbdb7ed44a
+    modified: 1606438700003
+    created: 1606417982945
+    url: http://localhost:8080/transactions
+    name: Transaction Just Json
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"accountId": 1,
+        	"operationId": 4,
+        	"amount": 123.11
+        	
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_1ab7452ed28941fea52ca7c0e5055e29
+    authentication: {}
+    metaSortKey: -1606389184426.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_80c971d3f26a413cba405e0110f7c076
+    parentId: fld_14f0dde773654690913fc9cbdb7ed44a
+    modified: 1606390916894
+    created: 1606390395713
+    url: http://localhost:8080/transactions
+    name: Transactions List
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1606364630227
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_b798a2f6ef7a41bb9ab7db9106935816
+    parentId: fld_14f0dde773654690913fc9cbdb7ed44a
+    modified: 1606541265784
+    created: 1606390338789
+    url: http://localhost:8080/transactions/1
+    name: Transaction ById
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1606364630177
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_faf2850e487a15001c4f730485f65a5688201d56
+    parentId: wrk_76d04fcf165e4d90abd77b6246d3004c
+    modified: 1586342537254
+    created: 1586342537254
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1586342537254
+    _type: environment
+  - _id: jar_faf2850e487a15001c4f730485f65a5688201d56
+    parentId: wrk_76d04fcf165e4d90abd77b6246d3004c
+    modified: 1586342537258
+    created: 1586342537258
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_0e11210b2a304099bdbb130211ed1e93
+    parentId: wrk_76d04fcf165e4d90abd77b6246d3004c
+    modified: 1592304410299
+    created: 1592304410299
+    fileName: BootCamp
+    contents: ""
+    contentType: yaml
+    _type: api_spec
+  - _id: env_b6b7b19b3da648ada56f94a799ee2a5f
+    parentId: env_faf2850e487a15001c4f730485f65a5688201d56
+    modified: 1590578347588
+    created: 1586342943093
+    name: dev
+    data:
+      base_url: http://localhost:3333
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTA1NzgzMzIsImV4cCI6MTU5MDY2NDczMiwic3ViIjoiMGQwYjNmMDktNjdjMC00MjcxLThkMTQtYWJkZWI1Nzg3ZjI5In0.rQp8NmMvu3E7mfzFN5wP0ORPZ5CBqhO9jWLvglQmZkY
+    dataPropertyOrder:
+      "&":
+        - base_url
+        - token
+    color: "#735ec3"
+    isPrivate: false
+    metaSortKey: 1586342943093
+    _type: environment
+  - _id: env_597a9c5b5a314c50b31ecb7ac36efcc8
+    parentId: env_faf2850e487a15001c4f730485f65a5688201d56
+    modified: 1589547672596
+    created: 1586342986971
+    name: production
+    data:
+      base_url: ""
+    dataPropertyOrder:
+      "&":
+        - base_url
+    color: "#735ec3"
+    isPrivate: false
+    metaSortKey: 1586342943143
+    _type: environment
