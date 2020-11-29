@@ -1,24 +1,23 @@
-FROM ubuntu:latest as builder
+FROM alpine:latest as builder
 
 #evitar interações durante instalação 
 ENV DEBIAN_FRONTEND=noninteractive
 
 #instalando git
-RUN apt-get update
-RUN	apt-get install -y git
+RUN apk update && \
+	apk add git
 
 #instalando OpenJDK-8
-RUN apt-get update && \
-    apt-get install -y openjdk-8-jdk && \
-    apt-get install -y ant && \
-    apt-get clean;
+RUN apk update && \
+    apk add openjdk8-jre && \
+    apk add apache-ant
 
 # Setup JAVA_HOME -- useful for docker commandline
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 RUN export JAVA_HOME
 
 #installando mysql-client
-RUN apt-get install -y mysql-client
+RUN apk add mysql-client
 
 #cria pasta pismo
 #RUN mkdir pismoDocker
@@ -30,7 +29,7 @@ FROM alpine
 COPY --from=builder . .
 
 #o comando abaixo apenas faz o donwload de um arquivo qualquer para que o hash final seja alterado e, como consequentemente, o git faça o clone novamente ao inves de usar o cache
-#ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 
 RUN git clone https://github.com/rudineybarbosa/transactions.git
 
