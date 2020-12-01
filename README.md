@@ -1,12 +1,14 @@
-# HOW TO EXECUTE
+# STUDYING DOCKER
+
+## HOW TO EXECUTE
 
 1- Install docker compose
 
 	https://docs.docker.com/compose/install/
 
 2- Download file
-
-      https://github.com/rudineybarbosa/transactions/blob/main/docker-compose.yml
+	
+	https://github.com/rudineybarbosa/transactions/blob/main/docker-compose.yml
 
 3- Open your terminal and go to path where downloaded previous file
 
@@ -14,14 +16,16 @@
 
     docker-compose up
 
-# HOW TO TEST
+## HOW TO TEST
 
 1- Intall Insominia
 
     https://insomnia.rest/download/
 
 2- Download file
+	
+- This file has all endpoints configurated to consume the app running on docker
     
-    https://github.com/rudineybarbosa/transactions/blob/main/Insomnia_pismo.json
+	https://github.com/rudineybarbosa/transactions/blob/main/Insomnia_pismo.json
 
 3- On Insominia application, import previous downloaded file
