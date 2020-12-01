@@ -1,5 +1,7 @@
 package com.pismo.transactions.domain.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +20,11 @@ public class Account {
 	
 	@Column(nullable = false)
 	private String documentNumber;
+	
+	@Column(nullable = false)
+	private BigDecimal availableCreditLimit;
 
+	
 	public Account(String documentNumber) {
 		super();
 		this.documentNumber = documentNumber;

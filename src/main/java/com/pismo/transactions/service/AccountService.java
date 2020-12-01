@@ -50,6 +50,11 @@ public class AccountService {
 
 		return accountRepository.save(account);
 	}
+
+	public Account update(Account account) {
+		
+		return accountRepository.save(account);
+	}
 	
 	public void remove(Account entity) {
 		accountRepository.remove(entity);

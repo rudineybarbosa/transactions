@@ -15,6 +15,7 @@ import com.pismo.transactions.domain.model.Account;
 import com.pismo.transactions.domain.model.OperationType;
 import com.pismo.transactions.domain.model.Transaction;
 import com.pismo.transactions.errors.AccountExistException;
+import com.pismo.transactions.errors.AccountWithouLimitException;
 import com.pismo.transactions.errors.IllegalOperationTypeException;
 import com.pismo.transactions.errors.TransactionInexistentException;
 import com.pismo.transactions.repository.impl.AccountRepositoryImpl;
@@ -34,10 +35,10 @@ class TransactionsApplicationTests {
 	private AccountService accountService;
 
 	@Mock
-	private OperationTypeRepositoryImpl operationRepository;
+	private AccountService accountServiceMocked;
 
-	@InjectMocks
-	private OperationTypeService operationServiceInjected;
+	@Mock
+	private OperationTypeRepositoryImpl operationRepository;
 
 	@Mock
 	private OperationTypeService operationService;
@@ -55,7 +56,29 @@ class TransactionsApplicationTests {
 	void contextLoads() {
 	}
 
-//	@Test
+	@Test
+	public void whenSaveTransactionWithoutLimitShouldGetError() {
+		Long id = 1l;
+		
+		BigDecimal amountPositive = new BigDecimal(-123.00);
+		OperationType operation = new OperationType(id, "COMPRA ...");
+		
+		Account account = new Account();
+		account.setId(id);
+		account.setAvailableCreditLimit(new BigDecimal(100.00));
+		
+		Transaction transaction = new Transaction(amountPositive, account, operation);
+		
+		when(accountServiceMocked.findById(id)).thenReturn(account);
+		when(operationService.findById(id))
+			.thenReturn(operation);
+		
+		 Assertions.assertThrows(AccountWithouLimitException.class, () -> {
+			 transactionService.save(transaction);
+		  });
+	}
+
+	@Test
 	public void whenSaveIllegalTransactionShouldGetError() {
 		Long id = 1l;
 		
@@ -64,11 +87,11 @@ class TransactionsApplicationTests {
 		
 		Transaction transaction = new Transaction(amountPositive, accountMock, operation);
 		
-		when(operationServiceInjected.findById(id)).thenReturn(operation);
+		when(operationService.findById(id)).thenReturn(operation);
 		
-		 Assertions.assertThrows(IllegalOperationTypeException.class, () -> {
-			 transactionService.save(transaction);
-		  });
+		Assertions.assertThrows(IllegalOperationTypeException.class, () -> {
+			transactionService.save(transaction);
+		});
 	}
 
 	@Test

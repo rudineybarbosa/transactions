@@ -61,7 +61,7 @@ public class TransactionController {
 		Object operationId = transactionMap.get("operationId");
 		Object amount = transactionMap.get("amount");
 		
-		Transaction transaction = null;;
+		Transaction transaction = null;
 		try {
 			transaction = 
 					service.save(accountId, 

@@ -4,14 +4,18 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pismo.transactions.domain.model.Account;
 import com.pismo.transactions.domain.model.OperationType;
 import com.pismo.transactions.domain.model.Transaction;
+import com.pismo.transactions.errors.AccountWithouLimitException;
 import com.pismo.transactions.errors.TransactionInexistentException;
 import com.pismo.transactions.repository.impl.TransactionRepositoryImpl;
+import com.pismo.transactions.validate.ValidateAccount;
 import com.pismo.transactions.validate.ValidateTransaction;
 import com.pismo.transactions.validate.ValidateTransactionRequestParameters;
 
@@ -41,12 +45,29 @@ public class TransactionService {
 		return transaction;
 	}
 
+	@Transactional
 	public Transaction save(Transaction transaction) {
 		
-		boolean isValidOperation = isValidTransaction(transaction);
+		boolean isValidOperation = isValidOperation(transaction);
+		
+		Account account = accountService.findById(transaction.getAccount().getId());
+		
+		BigDecimal availableCreditLimit = account.getAvailableCreditLimit();
+		
+		verifyTransactionAmount(transaction, availableCreditLimit);
+		
 		if(isValidOperation) {
 			
-			return transactionRepository.save(transaction);
+			transaction = transactionRepository.save(transaction);
+		
+			BigDecimal newAvailableCreditLimit = 
+					account.getAvailableCreditLimit().add(transaction.getAmount());
+			
+			account.setAvailableCreditLimit(newAvailableCreditLimit);
+			
+			accountService.update(account);
+			
+			return transaction;
 			
 		} else {
 			
@@ -89,13 +110,42 @@ public class TransactionService {
 		transactionRepository.remove(entity);
 	}
 	
-	private boolean isValidTransaction(Transaction transaction) {
+	private boolean isValidOperation(Transaction transaction) {
 		
 		OperationType operation = 
 				operationService.findById(transaction.getOperation().getId());
 		
+		boolean isOutcomeOperation = this.isOutcomeOperation(operation);
+		
 		return ValidateTransaction
-					.validateTransaction(operation, transaction.getAmount());
+					.validateTransaction(operation, transaction.getAmount(),
+							isOutcomeOperation);
+		
+	}
+	
+	private boolean isOutcomeOperation(OperationType operation) {
+		return operation.getDescription().contains("COMPRA") ||
+				operation.getDescription().contains("SAQUE");
+	}
+	
+	private void verifyTransactionAmount(Transaction transaction, 
+			BigDecimal availableCreditLimit) {
+		
+		boolean isOutcomeOperation = this.isOutcomeOperation(transaction.getOperation());
+		
+		if(isOutcomeOperation) {
+			
+			boolean hasAccountLimit = ValidateAccount
+					.hasLimit(transaction.getAccount().getId(),
+								transaction.getAmount(), 
+								availableCreditLimit);
+			
+			if(!hasAccountLimit) {
+				
+				throw new AccountWithouLimitException("Usário sem limite disponpivel");
+				
+			}
+		}
 		
 	}
 }
