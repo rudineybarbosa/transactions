@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.pismo.transactions.domain.model.Account;
 import com.pismo.transactions.domain.model.OperationType;
 import com.pismo.transactions.domain.model.Transaction;
-import com.pismo.transactions.errors.AccountWithouLimitException;
+import com.pismo.transactions.errors.AccountWithoutLimitException;
 import com.pismo.transactions.errors.TransactionInexistentException;
 import com.pismo.transactions.repository.impl.TransactionRepositoryImpl;
 import com.pismo.transactions.validate.ValidateAccount;
@@ -142,7 +142,7 @@ public class TransactionService {
 			
 			if(!hasAccountLimit) {
 				
-				throw new AccountWithouLimitException("Usário sem limite disponpivel");
+				throw new AccountWithoutLimitException("Usário sem limite disponpivel");
 				
 			}
 		}

@@ -15,7 +15,7 @@ import com.pismo.transactions.domain.model.Account;
 import com.pismo.transactions.domain.model.OperationType;
 import com.pismo.transactions.domain.model.Transaction;
 import com.pismo.transactions.errors.AccountExistException;
-import com.pismo.transactions.errors.AccountWithouLimitException;
+import com.pismo.transactions.errors.AccountWithoutLimitException;
 import com.pismo.transactions.errors.IllegalOperationTypeException;
 import com.pismo.transactions.errors.TransactionInexistentException;
 import com.pismo.transactions.repository.impl.AccountRepositoryImpl;
@@ -28,29 +28,36 @@ import com.pismo.transactions.service.TransactionService;
 @SpringBootTest
 class TransactionsApplicationTests {
 
-	@Mock
-	private AccountRepositoryImpl accountRepository;
+	@Mock //this MOCK will be inject on AccountService bellow
+	private AccountRepositoryImpl accountRepositoryMocked;
+	//Explanation: https://qastack.com.br/programming/16467685/difference-between-mock-and-injectmocks
 
 	@InjectMocks
-	private AccountService accountService;
+	private AccountService accountServiceInjectMock;
 
 	@Mock
 	private AccountService accountServiceMocked;
 
 	@Mock
-	private OperationTypeRepositoryImpl operationRepository;
+	private OperationTypeRepositoryImpl operationRepositoryMocked;
 
 	@Mock
-	private OperationTypeService operationService;
+	private OperationTypeService operationServiceMocked;
 
 	@Mock
-	private TransactionRepositoryImpl transactionRepository;
+	private TransactionRepositoryImpl transactionRepositoryMocked;
 
 	@InjectMocks
-	private TransactionService transactionService;
+	private TransactionService transactionServiceInjectMock;
 	
 	@Mock
-	private Account accountMock;
+	private Account accountMocked;
+	
+	@Mock
+	private Transaction transactionMocked;
+	
+	@Mock
+	private OperationType operationMocked;
 	
 	@Test
 	void contextLoads() {
@@ -60,22 +67,27 @@ class TransactionsApplicationTests {
 	public void whenSaveTransactionWithoutLimitShouldGetError() {
 		Long id = 1l;
 		
-		BigDecimal amountPositive = new BigDecimal(-123.00);
-		OperationType operation = new OperationType(id, "COMPRA ...");
+		BigDecimal amountNegative = new BigDecimal(-123.00);
+		BigDecimal availableCreditLimit = new BigDecimal(100.00);
 		
-		Account account = new Account();
-		account.setId(id);
-		account.setAvailableCreditLimit(new BigDecimal(100.00));
+		when(transactionMocked.getAccount()).thenReturn(accountMocked);
+		when(transactionMocked.getAmount()).thenReturn(amountNegative);
+		when(transactionMocked.getOperation()).thenReturn(operationMocked);
 		
-		Transaction transaction = new Transaction(amountPositive, account, operation);
+		when(operationServiceMocked.findById(id)).thenReturn(operationMocked);
+		when(operationMocked.getDescription()).thenReturn("COMPRA ...");
+		when(operationMocked.getId()).thenReturn(id);
 		
-		when(accountServiceMocked.findById(id)).thenReturn(account);
-		when(operationService.findById(id))
-			.thenReturn(operation);
+		when(accountMocked.getId()).thenReturn(id);
+		when(accountMocked.getAvailableCreditLimit()).thenReturn(availableCreditLimit);
 		
-		 Assertions.assertThrows(AccountWithouLimitException.class, () -> {
-			 transactionService.save(transaction);
-		  });
+		when(accountServiceMocked.findById(id)).thenReturn(accountMocked);
+		when(operationServiceMocked.findById(id))
+			.thenReturn(operationMocked);
+		
+		Assertions.assertThrows(AccountWithoutLimitException.class, () -> {
+		 transactionServiceInjectMock.save(transactionMocked);
+		});
 	}
 
 	@Test
@@ -83,14 +95,19 @@ class TransactionsApplicationTests {
 		Long id = 1l;
 		
 		BigDecimal amountPositive = new BigDecimal(123.00);
-		OperationType operation = new OperationType(id, "COMPRA ...");
 		
-		Transaction transaction = new Transaction(amountPositive, accountMock, operation);
+		when(transactionMocked.getAccount()).thenReturn(accountMocked);
+		when(transactionMocked.getAmount()).thenReturn(amountPositive);
+		when(transactionMocked.getOperation()).thenReturn(operationMocked);
 		
-		when(operationService.findById(id)).thenReturn(operation);
+		when(operationServiceMocked.findById(id)).thenReturn(operationMocked);
+		when(operationMocked.getDescription()).thenReturn("COMPRA ...");
+		when(operationMocked.getId()).thenReturn(id);
+		
+		when(operationServiceMocked.findById(id)).thenReturn(operationMocked);
 		
 		Assertions.assertThrows(IllegalOperationTypeException.class, () -> {
-			transactionService.save(transaction);
+			transactionServiceInjectMock.save(transactionMocked);
 		});
 	}
 
@@ -98,10 +115,10 @@ class TransactionsApplicationTests {
 	public void whenSearchInexistentTransactionShouldGetError() {
 		long id = 9999l;
 		
-		when(transactionRepository.findById(id)).thenReturn(null);
+		when(transactionRepositoryMocked.findById(id)).thenReturn(null);
 		
 		Assertions.assertThrows(TransactionInexistentException.class, () -> {
-			transactionService.findById(id);
+			transactionServiceInjectMock.findById(id);
 		});
 	}
 	
@@ -109,14 +126,14 @@ class TransactionsApplicationTests {
 	public void whenSaveAccountAlreadyExistShouldGetError() {
 		
 		String documentNumber = "112345679";
-
-		Account account = new Account(documentNumber);
 		
-		when(accountRepository.findByDocumentNumber(documentNumber))
-			.thenReturn(account);
+		when(accountMocked.getDocumentNumber()).thenReturn(documentNumber);
+
+		when(accountRepositoryMocked.findByDocumentNumber(documentNumber))
+			.thenReturn(accountMocked);
 		
 		Assertions.assertThrows(AccountExistException.class, () -> {
- 			accountService.save(account);
+ 			accountServiceInjectMock.save(accountMocked);
 	  });
 	}
 
@@ -124,20 +141,22 @@ class TransactionsApplicationTests {
 	public void whenSearchInexistentAccountShouldGetError() {
 		long id = 9999l;
 		
-		when(transactionRepository.findById(id)).thenReturn(null);
+		when(transactionRepositoryMocked.findById(id)).thenReturn(null);
 		
 		 Assertions.assertThrows(TransactionInexistentException.class, () -> {
-			 transactionService.findById(id);
+			 transactionServiceInjectMock.findById(id);
 		  });
 	}
 	
 	@Test
 	public void whenSaveNewAccountShouldGetSuccess() {
 		
-		when(accountService.save(accountMock)).thenReturn(accountMock);
+		when(accountMocked.getDocumentNumber()).thenReturn("1234");
 		
-		Account account = accountService.save(accountMock);
+		when(accountRepositoryMocked.save(accountMocked)).thenReturn(accountMocked);
 		
-		assertEquals(accountMock.getDocumentNumber(), account.getDocumentNumber());
+		Account account = accountServiceInjectMock.save(accountMocked);
+		
+		assertEquals(accountMocked.getDocumentNumber(), account.getDocumentNumber());
 	}
 }
